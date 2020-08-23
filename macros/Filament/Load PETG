@@ -1,0 +1,4 @@
+; 0:/macros/Filaments/Load PETG
+; Macro used to load PETG 
+  
+T0 M701 S"PETG" M703                                              ; Set system filament as PETG

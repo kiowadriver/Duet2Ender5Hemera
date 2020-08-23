@@ -1,0 +1,7 @@
+; Set normal settings after stall detection probing
+;
+M913 Z85	; Return Z motor current to normal
+M203 Z30			; Set maximum speeds (mm/min)
+M566 Z0.4			; Set maximum instantaneous speed changes (mm/min) (Jerk)
+M201 Z100			; Set maximum accelerations (mm/s^2)
+M915 Z S63 F1 R0		; Set StallGuard sensitivity for normal movement

@@ -1,0 +1,11 @@
+; move the nozzle to the center of the bed
+; x-probe-offset = -43
+; y-probe-offset = 3
+; x center = 112.5
+; y center = 112.5
+;
+G90				; absolute positioning
+G1 Z5				; drop bed for nozzle clearance
+G1 X155.5 Y109.5 F4000 		; move to bed center
+G91		
+

@@ -1,0 +1,4 @@
+; 0:/macros/Filaments/Load PLA
+; Macro used to load PLA 
+  
+T0 M701 S"PLA" M703                                           ; Set system filament as PLA

@@ -1,0 +1,26 @@
+; 0:/macros/general/filament/Unload_Common
+; Common Macro used to load filament, Called by the M702 command
+; Each filament in /filaments/XXX/unload.g will set the custom extruder temp then call this common macro
+
+; Determine if we need to Home first or not
+if state.status != "printing"	;If a print is NOT in progress
+	if !move.axes[0].homed || !move.axes[1].homed || !move.axes[2].homed
+		G28		; Home all axes
+
+; Filament is currently loaded
+; !! Need to add filament microswitch to sensor to use this feature !!
+;if sensors.filamentMonitors[0].filamentPresent = true		
+M291 P"Retracting filament..." R"Unloading Filament" T5 ; Display another message
+G1 E-50 F3000 		; Retract 50mm of filament at 3000mm/min
+M400				; Wait for all moves to finish
+	
+M291 P"Retracting filament..." R"Unloading Filament" T5 ; Display another message
+G1 E-50 F3000 		; Retract 50mm of filament at 3000mm/min
+M400				; Wait for all moves to finish
+
+;If a print is NOT in progress
+if state.status != "printing"	
+	G10 S0 ; Turn off the heaters
+
+M98 P/macros/Tunes/LuckyTune.g
+M291 R"Filament Handling" P"Unloading Complete." T5

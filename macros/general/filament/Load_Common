@@ -1,0 +1,42 @@
+; 0:/macros/general/filament/Load_Common
+; Common Macro used to load filament, Called by the M701 S”???” command
+; Each filament in /filaments/XXX/load.g will set the custom extruder temp then call this common macro
+
+; Determine if we need to Home first or not
+if state.status != "printing"	;If a print is NOT in progress
+	if !move.axes[0].homed || !move.axes[1].homed || !move.axes[2].homed
+		G28		; Home all axes
+
+; Filament is currently loaded
+; !! Need to add filament microswitch to sensor to use this feature !!
+;if sensors.filamentMonitors[0].filamentPresent = true		
+M291 P"Retracting filament..." R"Unloading Filament" T5 ; Display another message
+G1 E-50 F3000 		; Retract 50mm of filament at 3000mm/min
+M400				; Wait for all moves to finish
+	
+M291 P"Retracting filament..." R"Unloading Filament" T5 ; Display another message
+G1 E-50 F3000 		; Retract 50mm of filament at 3000mm/min
+M400				; Wait for all moves to finish
+
+; Position the bed
+G90            		; absolute positioning
+G1 X0 Y0 Z50 F6000 	; go to X=0 Y=0 Z=50
+
+M98 P/macros/Tunes/Attention.g
+M291 P"Insert Filament and then click OK to start feeding" R"Proceed?" S3
+M291 P"Feeding filament..." R"Loading Filament" T5 ; Display new message
+G1 E100 F600 ; Feed 100mm of filament at 600mm/min
+
+M98 P/macros/Tunes/Attention.g
+M291 P"Wipe off filament then click OK to complete feeding" R"Proceed?" S3
+
+M291 P"Retracting 2mm of filament..." R" Filament" T5 ; Display another message
+G1 E-2 F300 		; Retract 2mm of filament at 300mm/min
+M400				; Wait for all moves to finish
+
+;If a print is NOT in progress
+if state.status != "printing"	
+	G10 S0 ; Turn off the heaters
+
+M98 P/macros/Tunes/LuckyTune.g
+M291 R"Filament Handling" P"Loading Complete." T5

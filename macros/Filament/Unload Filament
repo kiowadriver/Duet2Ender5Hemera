@@ -1,0 +1,5 @@
+; 0:/macros/Filaments/Unload
+; Macro used to unload the current filament type
+
+M702; Unload filament as previously configured
+
